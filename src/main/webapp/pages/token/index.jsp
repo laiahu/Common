@@ -6,13 +6,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+var checkSubmitFlag = true;
+function checkSubmit(){ //避免重复提交表单
+	if(true == checkSubmitFlag){
+		document.theForm.submit();
+		checkSubmitFlag = false;  //避免重复提交
+	}else{
+		alert("你已经提交了表单，请不要重复提交!");
+	}
+}
+</script>
 </head>
 <body>
 <%
 TokenProcessor tokenProcessor = TokenProcessor.getInstance();
 String token = tokenProcessor.getToken(request);
 %>
-<form action="do_index.jsp" method="post" name="addForm">
+<form action="do_index.jsp" method="post" name="theForm">
  <input type="text" name="userName" value="" />
  <input type="hidden"  name="org.mycompany.token" value="<%=token%>" />
  
