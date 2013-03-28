@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
 @Transactional
 //@ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
-public class SpringTest {
+public class SpringTest {  
 
 	@Autowired
 	MemcachedClient memcachedClient;
