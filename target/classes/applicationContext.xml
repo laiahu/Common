@@ -1,66 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd
-        http://www.springframework.org/schema/aop 
-        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   
-        http://www.springframework.org/schema/tx  
-        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd ">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+	http://www.springframework.org/schema/security 
+	http://www.springframework.org/schema/tx/spring-security-3.1.xsd
+	http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd"
+	default-autowire="byName">
 
-	<bean id="memcachedClientBuilder" class="net.rubyeye.xmemcached.XMemcachedClientBuilder">
-                <!-- XMemcachedClientBuilder have two arguments.First is server list,and second is weights array. -->
-                <constructor-arg>
-                        <list>
-                                <bean class="java.net.InetSocketAddress">
-                                        <constructor-arg>
-                                                <value>localhost</value>
-                                        </constructor-arg>
-                                        <constructor-arg>
-                                                <value>11211</value>
-                                        </constructor-arg>
-                                </bean>
-                        </list>
-                </constructor-arg>
-                <constructor-arg>
-                        <list>
-                                <value>1</value>
-                                <value>2</value>
-                        </list>
-                </constructor-arg>
-                <!-- 
-                <property name="authInfoMap">
-                        <map>
-                                <entry key-ref="server1">
-                                        <bean class="net.rubyeye.xmemcached.auth.AuthInfo"
-                                                factory-method="typical">
-                                                <constructor-arg index="0">
-                                                        <value>cacheuser</value>
-                                                </constructor-arg>
-                                                <constructor-arg index="1">
-                                                        <value>123456</value>
-                                                </constructor-arg>
-                                        </bean>
-                                </entry>
-                        </map>
-                </property>
-                 -->
-                <property name="connectionPoolSize" value="2"></property>
-                <property name="commandFactory">
-                        <bean class="net.rubyeye.xmemcached.command.TextCommandFactory"></bean>
-                </property>
-                <property name="sessionLocator">
-                        <bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"></bean>
-                </property>
-                <property name="transcoder">
-                        <bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />
-                </property>
-        </bean>
-        <!-- Use factory bean to build memcached client -->
-        <bean id="memcachedClient" factory-bean="memcachedClientBuilder"
-                factory-method="build" destroy-method="shutdown"/>
+	<!-- 
+	<import resource="applicationContext_xmemcache.xml"/>
+ 	-->
+ 	
+ 	 <!-- 采用的annotation的方式进行AOP和 IOC -->  
+      
+    <!-- 配置了component-scan可以移除   
+     <context:annotation-config /> 
+     -->
+     
+ 	<!-- 启动对@AspectJ注解的支持 -->  
+    <aop:aspectj-autoproxy />   
+    <!-- 自动扫描包(自动注入) -->  
+    <context:component-scan base-package="com.mycompany.common.service" />   
+ 	
+ 	<context:component-scan base-package="com.mycompany.common.aop" />  
+ 	
+	<!-- aop 
+	<bean id="aopMethod" class="com.mycompany.common.aop.test.AopMethod"></bean>
+	<aop:config>
+		<aop:pointcut id="servicepointcut" expression="execution( * com.mycompany.common.service..*.*(..))" />
+		<aop:aspect id="myaspect" ref="aopMethod">
+			//对应expression执行前运行 
+			<aop:before method="beforeMethod" pointcut-ref="servicepointcut" />
+			//对应expression执行后返回正常运行 
+			<aop:after-returning method="afterReturningMethod"
+				pointcut-ref="servicepointcut" />
+			//对应expression抛出异常运行
+			<aop:after-throwing method="afterThrowing"
+				pointcut-ref="servicepointcut" />
+			//对应expression执行后运行（不管是否抛出异常都会执行）
+			<aop:after method="afterMethod" pointcut-ref="servicepointcut" />
+		</aop:aspect>
+	</aop:config>          
+     -->          
 </beans>
