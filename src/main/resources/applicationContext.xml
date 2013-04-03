@@ -35,6 +35,9 @@
  	
  	<context:component-scan base-package="com.mycompany.common.aop" />  
  	
+ 	<!-- spring context上下文，可取得注解的类 -->
+ 	<bean id="springContextHolder" class="com.mycompany.common.util.SpringContextHolder"></bean>
+ 	
 	<!-- aop 
 	<bean id="aopMethod" class="com.mycompany.common.aop.test.AopMethod"></bean>
 	<aop:config>

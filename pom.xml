@@ -542,6 +542,12 @@
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.26</version>
+				<configuration>
+					<webApp>
+						<contextPath>/Common</contextPath>
+					</webApp>
+					<useProvidedScope>true</useProvidedScope>
+				</configuration>
 			</plugin>
 			
     </plugins>
